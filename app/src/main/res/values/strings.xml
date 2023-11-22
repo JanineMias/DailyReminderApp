@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">DailyReminderApp</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="custom_alarm">custom alarm</string>
+    <string name="background">background</string>
+    <string name="daily_reminder">Daily Reminder</string>
+    <string name="reminder">reminder</string>
+
+    <string-array name="setTime">
+        <item>AM</item>
+        <item>PM</item>
+    </string-array>
+</resources>

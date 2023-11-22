@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".customAlarm">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnCancel"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#24263F"
+                android:contentDescription="CancelButton"
+                app:icon="@android:drawable/ic_delete"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="34dp"
+                app:iconTint="#0B0B0B"
+                app:iconTintMode="src_in" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="cursive"
+                android:text="Add A New Alarm"
+                android:textAlignment="center"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/btnCheck"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#24263F"
+                android:contentDescription="CheckButton"
+                app:icon="@drawable/check"
+                app:iconGravity="textEnd"
+                app:iconPadding="0dp"
+                app:iconSize="34dp"
+                app:iconTint="#FAF5F5"
+                app:iconTintMode="multiply" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/etAlarmName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Alarm Name"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="     Alarm Description" />
+
+        <EditText
+            android:id="@+id/etAlarmDescription"
+            style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Input Description"
+            android:inputType="text"
+            android:textColorHint="#8D6E63" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="18dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="163dp"
+            android:background="#EFEDED"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="67dp"
+                android:layout_height="match_parent" />
+
+            <NumberPicker
+                android:id="@+id/numpicHours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="68dp" />
+
+                <TextView
+                    android:id="@+id/tvHr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="H"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <NumberPicker
+                android:id="@+id/numpicMinutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="69dp" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Min" />
+
+            </LinearLayout>
+
+            <NumberPicker
+                android:id="@+id/numpicAmPm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="19dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnRepeatOnce"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#24263F"
+                android:text="Alarm Once"
+                android:textColor="#B287FE" />
+
+            <Button
+                android:id="@+id/btnCustomRepeat"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#24263F"
+                android:text="Customize"
+                android:textColor="#B388FF" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="     Ringtone" />
+
+        <Spinner
+            android:id="@+id/spinRingtone"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:spinnerMode="dropdown" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="23dp" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="     Snooze" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="89dp"
+                android:layout_height="wrap_content"
+                android:text="     Minutes:" />
+
+            <EditText
+                android:id="@+id/etSnoozeMinutes"
+                android:layout_width="54dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="01"
+                android:inputType="time"
+                android:minHeight="48dp"
+                android:textAlignment="textEnd"
+                android:textColorHint="#8D6E63" />
+
+            <Space
+                android:layout_width="11dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="208dp"
+                android:layout_height="wrap_content"
+                android:text="min" />
+
+            <Switch
+                android:id="@+id/switchSnooze"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="48dp"
+                android:minHeight="48dp" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
+
+    </LinearLayout>
+
+</FrameLayout>

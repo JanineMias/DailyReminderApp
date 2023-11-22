@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homeFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="visible"
+    tools:context=".homePage">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="17dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            style="@style/Widget.Material3.MaterialTimePicker.Display.HelperText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:text="Alarms"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="18dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tvFinalTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1:00"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tvFinalAmPm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PM"
+                android:textSize="14sp" />
+
+            <Space
+                android:layout_width="28dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tvFinalAlarmDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Elective (online Class)"
+                android:textSize="14sp" />
+
+            <Space
+                android:layout_width="13dp"
+                android:layout_height="match_parent" />
+
+            <Switch
+                android:id="@+id/switchFinal"
+                android:layout_width="59dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvFinalRepeat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="     Wed" />
+    </LinearLayout>
+</FrameLayout>
