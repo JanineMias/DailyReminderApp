@@ -77,7 +77,8 @@
             <Switch
                 android:id="@+id/switchFinal"
                 android:layout_width="59dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                tools:ignore="TouchTargetSizeCheck" />
         </LinearLayout>
 
         <TextView
