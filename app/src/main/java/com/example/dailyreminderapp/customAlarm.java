@@ -5,6 +5,7 @@ import static android.database.sqlite.SQLiteDatabase.openDatabase;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,14 +44,21 @@ public class customAlarm extends Fragment {
     Spinner ringtone;
     Switch snooze;
 
+    int reminderID;
+    boolean isEdit;
+
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstancesState){
+        Bundle args = getArguments();
+
+        isEdit = args.getBoolean("isEdit");
+        reminderID = args.getInt("ID");
 
         // inflate layout for the fragment
         view = inflater.inflate(R.layout.fragment_custom_alarm, container, false);
 
-        init();
         databaseInit(requireContext());
+        init();
 
         return view;
     }
@@ -84,25 +92,55 @@ public class customAlarm extends Fragment {
         // delete an existing alarm
         cancel = view.findViewById(R.id.btnCancel);
         cancel.setOnClickListener(v -> {
+            deleteReminder(reminderID);
             backToHome();
         });
 
         // adds a new alarm
         check = view.findViewById(R.id.btnCheck);
         check.setOnClickListener(v -> {
-            addReminder(alarmName.getText().toString(),
-                        alarmDesc.getText().toString(),
-                        timeFormatter(picHours.getValue(),
-                        picMinutes.getValue()),
-                        time[picAmPm.getValue()],
-                        snooze.isChecked(),
+
+            if (isEdit){
+                editReminder(reminderID,
+                            alarmName.getText().toString(),
+                            alarmDesc.getText().toString(),
+                            timeFormatter(picHours.getValue(),
+                            picMinutes.getValue()),
+                            time[picAmPm.getValue()],
+                            snooze.isChecked(),
                         0);
+            }
+
+            else {
+                addReminder(alarmName.getText().toString(),
+                            alarmDesc.getText().toString(),
+                            timeFormatter(picHours.getValue(),
+                            picMinutes.getValue()),
+                            time[picAmPm.getValue()],
+                            snooze.isChecked(),
+                        0);
+            }
+
+
             backToHome();
         });
+
+        retrieveReminder(reminderID);
     }
 
     String timeFormatter(int hours, int minutes){
-        return hours + ":" + minutes;
+        String _hours = Integer.toString(hours);
+        String _minutes = Integer.toString(minutes);
+
+        if (hours < 10){
+            _hours = "0"+_hours;
+        }
+
+        if (minutes < 10){
+            _minutes = "0"+_minutes;
+        }
+
+        return _hours + ":" + _minutes;
     }
 
     void backToHome(){
@@ -144,9 +182,58 @@ public class customAlarm extends Fragment {
         db.insert(TABLE_NAME, null, value);
     }
 
+    //RETURNS HOURS FROM FORMATTED TEXT;
+    int getHours(String time){
+        int colonIndex = time.indexOf(':');
+
+        String hoursPart = time.substring(0, colonIndex);
+
+        return Integer.parseInt(hoursPart);
+    }
+
+    int getMinutes(String time){
+        int colonIndex = time.indexOf(':');
+
+        String minutesPart = time.substring(colonIndex + 1);
+
+        return Integer.parseInt(minutesPart);
+    }
+    int getMeridiem(String[] array, String targetValue) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].equalsIgnoreCase(targetValue)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     void retrieveReminder(int reminderID){
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + "reminder_id = ?";
         cursor = db.rawQuery(query, new String[]{Integer.toString(reminderID)});
+
+        try {
+            if (cursor.moveToFirst()) {
+                alarmName.setText(cursor.getString(1));
+                alarmDesc.setText(cursor.getString(2));
+                picHours.setValue(getHours(cursor.getString(3)));
+                picMinutes.setValue(getMinutes(cursor.getString(3)));
+                picAmPm.setValue(getMeridiem(time, cursor.getString(4)));
+
+                boolean snoozeState = (cursor.getInt(5) > 0);
+
+                snooze.setChecked(snoozeState);
+                snoozeMinutes.setText(cursor.getInt(6));
+            }
+
+        } catch (Exception e) {
+            Log.d("ERROR", e.toString());
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        cursor.close();
     }
 
     void databaseInit(Context context){

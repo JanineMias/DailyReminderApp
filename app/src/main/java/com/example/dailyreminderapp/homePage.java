@@ -8,12 +8,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class homePage extends Fragment {
     public final String DATABASE_NAME = "REMINDER";
@@ -23,23 +27,50 @@ public class homePage extends Fragment {
     Cursor cursor;
 
     View view;
+
+    ArrayList<reminderCardDetails> reminderCard = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstancesState){
 
         // inflate layout for the fragment
         view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
-        init();
         databaseInit(requireContext());
+        retrieveAllReminders();
+
+        RecyclerView recyclerView = view.findViewById(R.id.reminderList);
+
+        reminderArrayAdapter adapter = new reminderArrayAdapter(requireContext(), reminderCard);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         return view;
     }
-    public void init() {
-
-    }
 
     void retrieveAllReminders(){
+        String query = "SELECT * FROM " + TABLE_NAME;
+        cursor = db.rawQuery(query, null);
 
+        try {
+            while (cursor.moveToNext()) {
+                reminderCard.add(
+                        new reminderCardDetails(cursor.getInt(0),
+                                                cursor.getString(3),
+                                                cursor.getString(4),
+                                                cursor.getString(1),
+                                                cursor.getString(2))
+                );
+            }
+
+        } catch (Exception e) {
+            Log.d("ERROR", e.toString());
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
     }
 
     void databaseInit(Context context){
