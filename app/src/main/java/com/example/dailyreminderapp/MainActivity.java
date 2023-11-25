@@ -15,6 +15,8 @@ import android.database.sqlite.SQLiteDatabase;
 public class MainActivity extends AppCompatActivity {
     Button reminder, newAlarm;
 
+    public static FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,10 +25,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void init(){
+        fragmentManager = getSupportFragmentManager();
+
         reminder = findViewById(R.id.btnReminder);
 
         reminder.setOnClickListener(v -> {
-            FragmentManager fragmentManager = getSupportFragmentManager();
+
             fragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView, homePage.class,null)
                     .setReorderingAllowed(true)
@@ -35,20 +39,31 @@ public class MainActivity extends AppCompatActivity {
         });
         newAlarm = findViewById(R.id.btnNewAlarm);
         newAlarm.setOnClickListener(v -> {
-
-            Bundle args = new Bundle();
-            args.putBoolean("isEdit", false);
-
-            customAlarm fragment = new customAlarm();
-
-            fragment.setArguments(args);
-
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView, fragment,null)
-                    .setReorderingAllowed(true)
-                    .addToBackStack(null)
-                    .commit();
+            openCustomAlarm(0);
         });
     }
+
+    public void openCustomAlarm(int id) {
+        if (id > 0) {
+            openFragment(true, 1);
+        } else {
+            openFragment(false, 0);
+        }
+    }
+
+    private void openFragment(boolean isEdit, int id) {
+        Bundle args = new Bundle();
+        args.putBoolean("isEdit", isEdit);
+        args.putInt("ID", id);
+
+        customAlarm fragment = new customAlarm();
+        fragment.setArguments(args);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, fragment, null)
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .commit();
+    }
+
 }

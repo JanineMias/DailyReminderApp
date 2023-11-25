@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="#00FFFFFF">
 
     <LinearLayout
         android:id="@+id/reminderDetails"
@@ -13,45 +15,51 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp">
 
             <TextView
                 android:id="@+id/reminderTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:text="00:00"
-                android:textStyle="bold"
                 android:textSize="30sp"
-                android:layout_centerVertical="true"/>
+                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/meridiem"
-                android:layout_toEndOf="@id/reminderTime"
+                android:id="@+id/reminderMeridiem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/reminderTime"
                 android:paddingLeft="2dp"
-                android:text="PM"/>
+                android:text="PM" />
 
             <TextView
                 android:id="@+id/reminderTitle"
-                android:layout_toEndOf="@id/meridiem"
                 android:layout_width="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/reminderMeridiem"
+                android:paddingLeft="10dp"
                 android:text="Title"
-                android:textSize="20sp"
-                android:paddingLeft="10dp"/>
+                android:textSize="20sp" />
 
             <Switch
                 android:id="@+id/reminderSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:minWidth="48dp"
-                android:minHeight="48dp"/>
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/cardID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#00FFFFFF" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -61,11 +69,12 @@
             android:layout_marginRight="10dp">
 
             <TextView
+                android:id="@+id/reminderDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Description"
-                android:textSize="15sp"
-                android:textColor="#939393"/>
+                android:textColor="#939393"
+                android:textSize="15sp" />
         </RelativeLayout>
 
     </LinearLayout>
