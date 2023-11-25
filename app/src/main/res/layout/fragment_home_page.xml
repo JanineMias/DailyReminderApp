@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <Space
             android:layout_width="match_parent"
@@ -30,61 +31,9 @@
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="41dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent" />
 
-            <Space
-                android:layout_width="18dp"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:id="@+id/tvFinalTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1:00"
-                android:textAlignment="center"
-                android:textSize="20sp" />
-
-            <Space
-                android:layout_width="12dp"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:id="@+id/tvFinalAmPm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PM"
-                android:textSize="14sp" />
-
-            <Space
-                android:layout_width="28dp"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:id="@+id/tvFinalAlarmDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Elective (online Class)"
-                android:textSize="14sp" />
-
-            <Space
-                android:layout_width="13dp"
-                android:layout_height="match_parent" />
-
-            <Switch
-                android:id="@+id/switchFinal"
-                android:layout_width="59dp"
-                android:layout_height="match_parent"
-                tools:ignore="TouchTargetSizeCheck" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvFinalRepeat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="     Wed" />
     </LinearLayout>
 </FrameLayout>
