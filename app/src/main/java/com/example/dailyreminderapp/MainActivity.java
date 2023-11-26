@@ -3,8 +3,15 @@ package com.example.dailyreminderapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -17,14 +24,20 @@ public class MainActivity extends AppCompatActivity {
 
     public static FragmentManager fragmentManager;
 
+    public static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        createNotificationChannel();
         init();
     }
 
     void init(){
+
+        context = MainActivity.this;
+
         fragmentManager = getSupportFragmentManager();
 
         reminder = findViewById(R.id.btnReminder);
@@ -66,4 +79,17 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    private void createNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = "Reminder Channel";
+            String description = "Channel for reminder notification";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+            NotificationChannel channel = new NotificationChannel("ReminderNotification", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 }

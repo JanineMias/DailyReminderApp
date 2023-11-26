@@ -1,6 +1,6 @@
 package com.example.dailyreminderapp;
 
-import static android.database.sqlite.SQLiteDatabase.openDatabase;
+import static com.example.dailyreminderapp.MainActivity.context;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,9 +21,10 @@ import android.widget.Switch;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.Cursor;
+import android.widget.Toast;
 
 import java.io.File;
-import java.util.ArrayList;
+
 
 public class customAlarm extends Fragment {
     public final String DATABASE_NAME = "REMINDER";
@@ -37,12 +38,9 @@ public class customAlarm extends Fragment {
     NumberPicker picHours, picMinutes, picAmPm;
     String[] time;
 
-    Button cancel, check,repeatOnce,customRepeat;
+    Button cancel, check;
 
-    EditText alarmName, alarmDesc,snoozeMinutes;
-
-    Spinner ringtone;
-    Switch snooze;
+    EditText alarmName, alarmDesc;
 
     int reminderID;
     boolean isEdit;
@@ -71,10 +69,7 @@ public class customAlarm extends Fragment {
         picAmPm = view.findViewById(R.id.numpicAmPm);
         time = getResources().getStringArray(R.array.setTime);
 
-        repeatOnce = view.findViewById(R.id.btnRepeatOnce);
-        customRepeat = view.findViewById(R.id.btnCustomRepeat);
-
-        picHours.setMinValue(0);
+        picHours.setMinValue(1);
         picHours.setMaxValue(12);
 
         picMinutes.setMinValue(0);
@@ -84,21 +79,28 @@ public class customAlarm extends Fragment {
         picAmPm.setMaxValue(1);
         picAmPm.setDisplayedValues(time);
 
-        ringtone = view.findViewById(R.id.spinRingtone);
-
-        snoozeMinutes = view.findViewById(R.id.etSnoozeMinutes);
-        snooze = view.findViewById(R.id.switchSnooze);
-
         // delete an existing alarm
         cancel = view.findViewById(R.id.btnCancel);
+
+        cancel.setVisibility(View.INVISIBLE);
+
         cancel.setOnClickListener(v -> {
             deleteReminder(reminderID);
             backToHome();
         });
 
+        if (isEdit){
+            cancel.setVisibility(View.VISIBLE);
+        }
+
         // adds a new alarm
         check = view.findViewById(R.id.btnCheck);
         check.setOnClickListener(v -> {
+
+            if (picHours.getValue() == 0 && picMinutes.getValue() == 0){
+                Toast.makeText(context, "Select a valid Time!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             if (isEdit){
                 editReminder(reminderID,
@@ -106,9 +108,7 @@ public class customAlarm extends Fragment {
                             alarmDesc.getText().toString(),
                             timeFormatter(picHours.getValue(),
                             picMinutes.getValue()),
-                            time[picAmPm.getValue()],
-                            snooze.isChecked(),
-                        0);
+                            time[picAmPm.getValue()]);
             }
 
             else {
@@ -116,11 +116,8 @@ public class customAlarm extends Fragment {
                             alarmDesc.getText().toString(),
                             timeFormatter(picHours.getValue(),
                             picMinutes.getValue()),
-                            time[picAmPm.getValue()],
-                            snooze.isChecked(),
-                        0);
+                            time[picAmPm.getValue()]);
             }
-
 
             backToHome();
         });
@@ -156,28 +153,25 @@ public class customAlarm extends Fragment {
         db.delete(TABLE_NAME, whereClause, new String[] {Integer.toString(reminderID)});
     }
 
-    void editReminder(int reminderID, String reminderName, String reminderDescription, String reminderTime, String meridiem, boolean snooze, int snoozeInteger){
+    void editReminder(int reminderID, String reminderName, String reminderDescription, String reminderTime, String meridiem){
         ContentValues value = new ContentValues();
         value.put("reminder_name", reminderName);
         value.put("reminder_description", reminderDescription);
         value.put("reminder_time", reminderTime);
         value.put("meridiem", meridiem);
-        value.put("snooze", snooze);
-        value.put("snooze_interval", snoozeInteger);
 
         String whereClause = "reminder_id = ? ";
 
         db.update(TABLE_NAME, value, whereClause, new String[] {Integer.toString(reminderID)});
     }
 
-    void addReminder(String reminderName, String reminderDescription, String reminderTime, String meridiem, boolean snooze, int snoozeInteger){
+    void addReminder(String reminderName, String reminderDescription, String reminderTime, String meridiem){
         ContentValues value = new ContentValues();
         value.put("reminder_name", reminderName);
         value.put("reminder_description", reminderDescription);
         value.put("reminder_time", reminderTime);
         value.put("meridiem", meridiem);
-        value.put("snooze", snooze);
-        value.put("snooze_interval", snoozeInteger);
+        value.put("switch_state", 0);
 
         db.insert(TABLE_NAME, null, value);
     }
@@ -218,11 +212,6 @@ public class customAlarm extends Fragment {
                 picHours.setValue(getHours(cursor.getString(3)));
                 picMinutes.setValue(getMinutes(cursor.getString(3)));
                 picAmPm.setValue(getMeridiem(time, cursor.getString(4)));
-
-                boolean snoozeState = (cursor.getInt(5) > 0);
-
-                snooze.setChecked(snoozeState);
-                snoozeMinutes.setText(cursor.getInt(6));
             }
 
         } catch (Exception e) {
@@ -242,7 +231,12 @@ public class customAlarm extends Fragment {
         db = SQLiteDatabase.openOrCreateDatabase(new File(dbDirectory, DATABASE_NAME), null);
         db.execSQL(""+
                 "CREATE TABLE IF NOT EXISTS " +
-                TABLE_NAME + "(reminder_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, reminder_name TEXT, reminder_description TEXT, reminder_time TEXT, meridiem TEXT, snooze BOOLEAN, snooze_interval INTEGER);"
+                TABLE_NAME + "(reminder_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                "reminder_name TEXT, " +
+                "reminder_description TEXT, " +
+                "reminder_time TEXT, " +
+                "meridiem TEXT, " +
+                "switch_state INTEGER);"
         );
     }
 }

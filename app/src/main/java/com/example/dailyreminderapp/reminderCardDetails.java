@@ -5,14 +5,16 @@ public class reminderCardDetails {
     String title;
     String description;
     int id;
+    boolean switch_state;
 
 
-    public reminderCardDetails(int id, String time, String meridiem, String title, String description) {
+    public reminderCardDetails(int id, String time, String meridiem, String title, String description, Boolean switch_state) {
         this.time = time;
         this.meridiem = meridiem;
         this.title = title;
         this.description = description;
         this.id = id;
+        this.switch_state = switch_state;
     }
 
     public String getID() {
@@ -33,5 +35,9 @@ public class reminderCardDetails {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean getSwitchState(){
+        return switch_state;
     }
 }
