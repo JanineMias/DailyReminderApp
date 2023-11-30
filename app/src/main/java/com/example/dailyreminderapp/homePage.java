@@ -41,10 +41,10 @@ public class homePage extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.reminderList);
 
-        reminderArrayAdapter adapter = new reminderArrayAdapter(requireContext(), reminderCard);
+        reminderArrayAdapter adapter = new reminderArrayAdapter(MainActivity.context, reminderCard);
 
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.context));
 
         return view;
     }
@@ -60,7 +60,8 @@ public class homePage extends Fragment {
                                                 cursor.getString(3),
                                                 cursor.getString(4),
                                                 cursor.getString(1),
-                                                cursor.getString(2))
+                                                cursor.getString(2),
+                                                cursor.getInt(5) > 0)
                 );
             }
 
@@ -79,7 +80,12 @@ public class homePage extends Fragment {
         db = SQLiteDatabase.openOrCreateDatabase(new File(dbDirectory, DATABASE_NAME), null);
         db.execSQL(""+
                 "CREATE TABLE IF NOT EXISTS " +
-                TABLE_NAME + "(reminder_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, reminder_name TEXT, reminder_description TEXT, reminder_time TEXT, meridiem TEXT, snooze BOOLEAN, snooze_interval INTEGER);"
+                TABLE_NAME + "(reminder_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                "reminder_name TEXT, " +
+                "reminder_description TEXT, " +
+                "reminder_time TEXT, " +
+                "meridiem TEXT, " +
+                "switch_state INTEGER);"
         );
     }
 }
