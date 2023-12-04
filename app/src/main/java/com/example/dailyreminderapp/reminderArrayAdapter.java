@@ -63,11 +63,8 @@ public class reminderArrayAdapter extends RecyclerView.Adapter<reminderArrayAdap
         String TABLE_NAME = "reminder";
         SQLiteDatabase db;
         Cursor cursor;
-
         TextView id, time, meridiem, title, description;
         Switch cardState;
-
-        PendingIntent pendingIntent;
         LinearLayout reminder;
 
         public MyViewHolder(@NonNull View itemView, Context context) {
@@ -83,27 +80,27 @@ public class reminderArrayAdapter extends RecyclerView.Adapter<reminderArrayAdap
             cardState = itemView.findViewById(R.id.reminderSwitch);
             reminder = itemView.findViewById(R.id.reminderDetails);
 
-            cardState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (b){
-                        if (getDBSwitchState() == 0){
-                            createReminder(context,
-                                    Integer.parseInt(id.getText().toString()),
-                                    title.getText().toString(),
-                                    description.getText().toString(),
-                                    getHours(time.getText().toString(),
-                                            meridiem.getText().toString()),
-                                    getMinutes(time.getText().toString()));
-                            editReminder(Integer.parseInt(id.getText().toString()), 1);
-                        }
+            cardState.setOnCheckedChangeListener((compoundButton, b) -> {
+                if (b){
+                    if (getDBSwitchState() == 0){
+                        createReminder(context,
+                                Integer.parseInt(id.getText().toString()),
+                                title.getText().toString(),
+                                description.getText().toString(),
+                                getHours(time.getText().toString(),
+                                        meridiem.getText().toString()),
+                                getMinutes(time.getText().toString()));
+                        editReminder(Integer.parseInt(id.getText().toString()), 1);
                     }
+                }
 
-                    else {
-                        if (getDBSwitchState() == 1){
-                            cancelReminder(context);
-                            editReminder(Integer.parseInt(id.getText().toString()), 0);
-                        }
+                else {
+                    if (getDBSwitchState() == 1){
+                        cancelReminder(context,
+                                Integer.parseInt(id.getText().toString()),
+                                title.getText().toString(),
+                                description.getText().toString());
+                        editReminder(Integer.parseInt(id.getText().toString()), 0);
                     }
                 }
             });
@@ -136,7 +133,7 @@ public class reminderArrayAdapter extends RecyclerView.Adapter<reminderArrayAdap
             intent.putExtra("Title", title);
             intent.putExtra("Description", description);
 
-            pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_MUTABLE);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_MUTABLE);
 
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -157,10 +154,18 @@ public class reminderArrayAdapter extends RecyclerView.Adapter<reminderArrayAdap
                     pendingIntent);
 
             Toast.makeText(context, "Alarm Set!", Toast.LENGTH_SHORT).show();
+            Log.e("Pending Intent: ", pendingIntent.toString());
         }
 
 
-        private void cancelReminder(Context context) {
+        private void cancelReminder(Context context, int id, String title, String description) {
+            Intent intent = new Intent(context, Alarm.class);
+
+            intent.putExtra("ID", id);
+            intent.putExtra("Title", title);
+            intent.putExtra("Description", description);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_MUTABLE);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             if (pendingIntent != null) {
                 alarmManager.cancel(pendingIntent);
@@ -245,4 +250,3 @@ public class reminderArrayAdapter extends RecyclerView.Adapter<reminderArrayAdap
         }
     }
 }
-

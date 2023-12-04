@@ -1,7 +1,5 @@
 package com.example.dailyreminderapp;
 
-import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

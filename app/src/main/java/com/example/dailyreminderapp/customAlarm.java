@@ -10,15 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.widget.Spinner;
-import android.widget.Switch;
-
 import android.database.sqlite.SQLiteDatabase;
 import android.database.Cursor;
 import android.widget.Toast;
@@ -112,6 +107,12 @@ public class customAlarm extends Fragment {
             }
 
             else {
+
+                if (alarmName.getText().toString().isEmpty()){
+                    Toast.makeText(context, "Enter an Alarm Title!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 addReminder(alarmName.getText().toString(),
                             alarmDesc.getText().toString(),
                             timeFormatter(picHours.getValue(),
